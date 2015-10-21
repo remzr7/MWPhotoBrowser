@@ -85,12 +85,12 @@
 
 - (void)prepareForReuse {
     [self hideImageFailure];
-    self.photo = nil;
-    self.captionView = nil;
-    self.selectedButton = nil;
-    self.playButton = nil;
+//    self.photo = nil;
+//    self.captionView = nil;
+//    self.selectedButton = nil;
+//    self.playButton = nil;
     _photoImageView.hidden = NO;
-    _photoImageView.image = nil;
+//    _photoImageView.image = nil;
     _index = NSUIntegerMax;
 }
 
@@ -107,13 +107,15 @@
 - (void)setPhoto:(MWPhoto *)photo {
     // Cancel any loading on old photo
     
-    [self displayImage]; 
 //    if (_photo && photo == nil) {
 //        if ([_photo respondsToSelector:@selector(cancelAnyLoading)]) {
 //            [_photo cancelAnyLoading];
 //        }
 //    }
-//    _photo = photo;
+    _photo = photo;
+    
+    [self displayImage];
+
 //    UIImage *img = [_photoBrowser imageForPhoto:_photo];
 //    if (img) {
 //        [self displayImage];
@@ -138,6 +140,7 @@
         
         [_photoImageView sd_setImageWithURL:_photo.photoURL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             if (error) {
+                
                 [self displayImageFailure];
             } else {
                 [self hideLoadingIndicator];
