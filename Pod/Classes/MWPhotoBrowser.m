@@ -630,11 +630,12 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     
 }
 
-- (void) addBatchPhotos:(NSArray *)photos  withPreviousCount:(int)previousCount {
+- (void) addBatchPhotos:(id)photos  withPreviousCount:(int)previousCount {
+    NSArray * photoArray = (NSArray *) photos;
     [_gridController.collectionView performBatchUpdates:^{
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         
-        for (int i = previousCount; i < photos.count + previousCount; i++) {
+        for (int i = previousCount; i < photoArray.count + previousCount; i++) {
             [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i
                                                               inSection:0]];
             [_photos addObject:[_delegate photoBrowser:self photoAtIndex:i]];
