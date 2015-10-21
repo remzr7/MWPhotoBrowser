@@ -807,7 +807,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
             [page.captionView removeFromSuperview];
             [page.selectedButton removeFromSuperview];
             [page.playButton removeFromSuperview];
-            [page prepareForReuse];
+//            [page prepareForReuse];
 			[page removeFromSuperview];
 			MWLog(@"Removed page at index %lu", (unsigned long)pageIndex);
 		}
