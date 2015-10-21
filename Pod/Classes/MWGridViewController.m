@@ -194,11 +194,14 @@
     CGFloat margin = [self getMargin];
     return UIEdgeInsetsMake(margin, margin, margin, margin);
 }
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    float bottomEdge = scrollView.contentOffset.y + scrollView.frame.size.height;
+    if (bottomEdge >= scrollView.contentSize.height)
+    {
         [_browser.delegate photoBrowserDidScrollToEnd:_browser];
     }
 }
+
 
 @end
