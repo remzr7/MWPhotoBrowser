@@ -113,21 +113,10 @@
                                        0, _selectedButton.frame.size.width, _selectedButton.frame.size.height);
 }
 
-#pragma mark - Cell
-
-- (void)prepareForReuse {
-    _photo = nil;
-    _gridController = nil;
-    _imageView.image = nil;
-    _loadingIndicator.progress = 0;
-    _selectedButton.hidden = YES;
-    [self hideImageFailure];
-    [super prepareForReuse];
-}
-
 #pragma mark - Image Handling
 
 - (void)setPhoto:(MWPhoto *)photo {
+    _videoIndicator.hidden = true;
     [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         if (error) {
             [self showImageFailure];
@@ -205,6 +194,7 @@
 - (void)showLoadingIndicator {
     _loadingIndicator.progress = 0;
     _loadingIndicator.hidden = NO;
+    _loadingIndicator.indeterminate = YES; 
     
     [self hideImageFailure];
 }

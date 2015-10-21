@@ -13,6 +13,8 @@
 #import "MWPhoto.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "UIImage+MWPhotoBrowser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 // Private methods and properties
 @interface MWZoomingScrollView () {
@@ -122,41 +124,49 @@
 // Get and display image
 - (void)displayImage {
 	if (_photo && _photoImageView.image == nil) {
-		
-		// Reset
+        
+        		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
 		self.zoomScale = 1;
 		self.contentSize = CGSizeMake(0, 0);
-		
-		// Get image from browser as it handles ordering of fetching
-		UIImage *img = [_photoBrowser imageForPhoto:_photo];
-		if (img) {
-			
-			// Hide indicator
-			[self hideLoadingIndicator];
-			
-			// Set image
-			_photoImageView.image = img;
-			_photoImageView.hidden = NO;
-			
-			// Setup photo frame
-			CGRect photoImageViewFrame;
-			photoImageViewFrame.origin = CGPointZero;
-			photoImageViewFrame.size = img.size;
-			_photoImageView.frame = photoImageViewFrame;
-			self.contentSize = photoImageViewFrame.size;
-
-			// Set zoom to minimum zoom
-			[self setMaxMinZoomScalesForCurrentBounds];
-			
-		} else  {
-
-            // Show image failure
-            [self displayImageFailure];
-			
-		}
-		[self setNeedsLayout];
+//
+//		// Get image from browser as it handles ordering of fetching
+//		UIImage *img = [_photoBrowser imageForPhoto:_photo];
+        
+        [_photoImageView sd_setImageWithURL:_photo.photoURL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            if (error) {
+                [self displayImageFailure];
+            } else {
+                [self hideLoadingIndicator];
+            }
+            
+        }];
+        [self setMaxMinZoomScalesForCurrentBounds];
+        [self setNeedsLayout];
+        
+//			// Hide indicator
+//
+//			// Set image
+//			_photoImageView.image = img;
+//			_photoImageView.hidden = NO;
+//			
+//			// Setup photo frame
+//			CGRect photoImageViewFrame;
+//			photoImageViewFrame.origin = CGPointZero;
+//			photoImageViewFrame.size = img.size;
+//			_photoImageView.frame = photoImageViewFrame;
+//			self.contentSize = photoImageViewFrame.size;
+//
+//			// Set zoom to minimum zoom
+//
+//		} else  {
+//
+//            // Show image failure
+//
+//			
+//		}
+//
 	}
 }
 
