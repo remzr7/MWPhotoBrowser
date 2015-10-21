@@ -11,6 +11,9 @@
 #import "MWCommon.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "UIImage+MWPhotoBrowser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
+
 
 #define VIDEO_INDICATOR_PADDING 10
 
@@ -21,7 +24,6 @@
     UIImageView *_loadingError;
 	DACircularProgressView *_loadingIndicator;
     UIButton *_selectedButton;
-    
 }
 
 @end
@@ -68,6 +70,7 @@
         _loadingIndicator.thicknessRatio = 0.1;
         _loadingIndicator.roundedCorners = NO;
 		[self addSubview:_loadingIndicator];
+
         
         // Listen for photo loading notifications
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -80,6 +83,8 @@
                                                    object:nil];
         
     }
+    
+    
     return self;
 }
 
@@ -122,22 +127,34 @@
 
 #pragma mark - Image Handling
 
-- (void)setPhoto:(id <MWPhoto>)photo {
-    _photo = photo;
-    if ([photo respondsToSelector:@selector(isVideo)]) {
-        _videoIndicator.hidden = !photo.isVideo;
-    } else {
-        _videoIndicator.hidden = YES;
-    }
-    if (_photo) {
-        if (![_photo underlyingImage]) {
-            [self showLoadingIndicator];
+- (void)setPhoto:(MWPhoto *)photo {
+    [_imageView sd_setImageWithURL:photo.photoURL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        if (error) {
+            [self showImageFailure];
         } else {
             [self hideLoadingIndicator];
         }
-    } else {
-        [self showImageFailure];
-    }
+        
+    }];
+    
+    [self showLoadingIndicator];
+
+//    
+//    _photo = photo;
+//    if ([photo respondsToSelector:@selector(isVideo)]) {
+//        _videoIndicator.hidden = !photo.isVideo;
+//    } else {
+//        _videoIndicator.hidden = YES;
+//    }
+//    if (_photo) {
+//        if (![_photo underlyingImage]) {
+//            [self showLoadingIndicator];
+//        } else {
+//            [self hideLoadingIndicator];
+//        }
+//    } else {
+//        [self showImageFailure];
+//    }
 }
 
 - (void)displayImage {
@@ -188,6 +205,7 @@
 - (void)showLoadingIndicator {
     _loadingIndicator.progress = 0;
     _loadingIndicator.hidden = NO;
+    
     [self hideImageFailure];
 }
 

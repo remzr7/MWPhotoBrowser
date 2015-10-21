@@ -624,10 +624,6 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         [self.view setNeedsLayout];
     }
     
-//    if (_gridController) {
-//        [_gridController.collectionView reloadData];
-//    }
-    
 }
 
 - (void) addBatchPhotos:(id)photos  withPreviousCount:(int)previousCount {
