@@ -624,9 +624,9 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         [self.view setNeedsLayout];
     }
     
-    if (_gridController) {
-        [_gridController.collectionView reloadData];
-    }
+//    if (_gridController) {
+//        [_gridController.collectionView reloadData];
+//    }
     
 }
 
@@ -644,24 +644,25 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 }
 
 - (NSUInteger)numberOfPhotos {
-    if (_photoCount == NSNotFound) {
-        if ([_delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
-            _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
-        } else if (_fixedPhotosArray) {
-            _photoCount = _fixedPhotosArray.count;
-        }
+    if ([_delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
+        _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
     }
-    if (_photoCount == NSNotFound) _photoCount = 0;
+    if (_photoCount == NSNotFound) {
+        if (_fixedPhotosArray) {
+            _photoCount = _fixedPhotosArray.count;
+        } else _photoCount = 0;
+    }
     return _photoCount;
 }
 
 - (id<MWPhoto>)photoAtIndex:(NSUInteger)index {
     id <MWPhoto> photo = nil;
     if (index < _photos.count) {
+        if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
+            photo = [_delegate photoBrowser:self photoAtIndex:index];
+        }
         if ([_photos objectAtIndex:index] == [NSNull null]) {
-            if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
-                photo = [_delegate photoBrowser:self photoAtIndex:index];
-            } else if (_fixedPhotosArray && index < _fixedPhotosArray.count) {
+            if (_fixedPhotosArray && index < _fixedPhotosArray.count) {
                 photo = [_fixedPhotosArray objectAtIndex:index];
             }
             if (photo) [_photos replaceObjectAtIndex:index withObject:photo];
@@ -675,10 +676,10 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (id<MWPhoto>)thumbPhotoAtIndex:(NSUInteger)index {
     id <MWPhoto> photo = nil;
     if (index < _thumbPhotos.count) {
+        if ([_delegate respondsToSelector:@selector(photoBrowser:thumbPhotoAtIndex:)]) {
+            photo = [_delegate photoBrowser:self thumbPhotoAtIndex:index];
+        }
         if ([_thumbPhotos objectAtIndex:index] == [NSNull null]) {
-            if ([_delegate respondsToSelector:@selector(photoBrowser:thumbPhotoAtIndex:)]) {
-                photo = [_delegate photoBrowser:self thumbPhotoAtIndex:index];
-            }
             if (photo) [_thumbPhotos replaceObjectAtIndex:index withObject:photo];
         } else {
             photo = [_thumbPhotos objectAtIndex:index];
