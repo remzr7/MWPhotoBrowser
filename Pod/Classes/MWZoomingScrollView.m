@@ -83,16 +83,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-//- (void)prepareForReuse {
-//    [self hideImageFailure];
-//    self.photo = nil;
-//    self.captionView = nil;
-//    self.selectedButton = nil;
-//    self.playButton = nil;
-//    _photoImageView.hidden = NO;
-//    _photoImageView.image = nil;
-//    _index = NSUIntegerMax;
-//}
+- (void)prepareForReuse {
+    [self hideImageFailure];
+    self.photo = nil;
+    self.captionView = nil;
+    self.selectedButton = nil;
+    self.playButton = nil;
+    _photoImageView.hidden = NO;
+    _photoImageView.image = nil;
+    _index = NSUIntegerMax;
+}
 
 - (BOOL)displayingVideo {
     return [_photo respondsToSelector:@selector(isVideo)] && _photo.isVideo;
@@ -125,8 +125,8 @@
 
 // Get and display image
 - (void)displayImage {
-	if (_photo && _photoImageView.image == nil) {
-        
+//	if (_photo && _photoImageView.image == nil) {
+    
         		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
@@ -169,7 +169,7 @@
 //			
 //		}
 //
-	}
+//	}
 }
 
 // Image failed so just show black!

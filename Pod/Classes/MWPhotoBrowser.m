@@ -807,7 +807,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
             [page.captionView removeFromSuperview];
             [page.selectedButton removeFromSuperview];
             [page.playButton removeFromSuperview];
-//            [page prepareForReuse];
+            [page prepareForReuse];
 			[page removeFromSuperview];
 			MWLog(@"Removed page at index %lu", (unsigned long)pageIndex);
 		}
@@ -967,7 +967,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     // Load adjacent images if needed and the photo is already
     // loaded. Also called after photo has been loaded in background
     MWPhoto * currentPhoto = [self photoAtIndex:index];
-    
+    [self loadAdjacentPhotosIfNecessary:currentPhoto];
     
     // Notify delegate
     if (index != _previousPageIndex) {
