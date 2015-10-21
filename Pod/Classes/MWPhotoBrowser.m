@@ -638,24 +638,18 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         for (int i = previousCount; i < photoArray.count + previousCount; i++) {
             [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i
                                                               inSection:0]];
-            [_photos addObject:[NSNull null]];
-            [_photos addObject:[NSNull null]];
         }
         [_gridController.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
-    } completion:^(BOOL finished) {
-        if (finished) {
-            _photoCount = photoArray.count + previousCount;
-        }
-    }];
+    } completion:nil];
 }
 
 
 - (NSUInteger)numberOfPhotos {
-    if (_photoCount == NSNotFound) {
-        if ([_delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
-            _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
-        } else if (_fixedPhotosArray) {
+    if ([_delegate respondsToSelector:@selector(numberOfPhotosInPhotoBrowser:)]) {
+        _photoCount = [_delegate numberOfPhotosInPhotoBrowser:self];
+    } else if (_photoCount == NSNotFound) {
+        if (_fixedPhotosArray) {
             _photoCount = _fixedPhotosArray.count;
         }
     }
@@ -666,10 +660,10 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 - (id<MWPhoto>)photoAtIndex:(NSUInteger)index {
     id <MWPhoto> photo = nil;
     if (index < _photos.count) {
-        if ([_photos objectAtIndex:index] == [NSNull null]) {
-            if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
-                photo = [_delegate photoBrowser:self photoAtIndex:index];
-            } else if (_fixedPhotosArray && index < _fixedPhotosArray.count) {
+        if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
+            photo = [_delegate photoBrowser:self photoAtIndex:index];
+        } else if ([_photos objectAtIndex:index] == [NSNull null]) {
+            if (_fixedPhotosArray && index < _fixedPhotosArray.count) {
                 photo = [_fixedPhotosArray objectAtIndex:index];
             }
             if (photo) [_photos replaceObjectAtIndex:index withObject:photo];
@@ -947,22 +941,20 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     NSUInteger i;
     if (index > 0) {
         // Release anything < index - 1
-        for (i = 0; i < index-1; i++) { 
-            id photo = [_photos objectAtIndex:i];
+        for (i = 0; i < index-1; i++) {
+            id photo = [self photoAtIndex:i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
                 MWLog(@"Released underlying image at index %lu", (unsigned long)i);
             }
         }
     }
     if (index < [self numberOfPhotos] - 1) {
         // Release anything > index + 1
-        for (i = index + 2; i < _photos.count; i++) {
-            id photo = [_photos objectAtIndex:i];
+        for (i = index + 2; i < [self numberOfPhotos]; i++) {
+            id photo = [self photoAtIndex:i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
-                [_photos replaceObjectAtIndex:i withObject:[NSNull null]];
                 MWLog(@"Released underlying image at index %lu", (unsigned long)i);
             }
         }
