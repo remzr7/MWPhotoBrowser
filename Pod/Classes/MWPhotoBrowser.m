@@ -966,11 +966,8 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     
     // Load adjacent images if needed and the photo is already
     // loaded. Also called after photo has been loaded in background
-    id <MWPhoto> currentPhoto = [self photoAtIndex:index];
-    if ([currentPhoto underlyingImage]) {
-        // photo loaded so load ajacent now
-        [self loadAdjacentPhotosIfNecessary:currentPhoto];
-    }
+    MWPhoto * currentPhoto = [self photoAtIndex:index];
+    
     
     // Notify delegate
     if (index != _previousPageIndex) {

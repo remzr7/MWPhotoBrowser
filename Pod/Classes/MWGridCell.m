@@ -126,7 +126,7 @@
         
     }];
     
-    [self showLoadingIndicator];
+//    [self showLoadingIndicator];
 
 //    
 //    _photo = photo;

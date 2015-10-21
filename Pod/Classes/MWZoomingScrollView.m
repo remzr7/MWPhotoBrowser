@@ -104,21 +104,23 @@
 
 #pragma mark - Image
 
-- (void)setPhoto:(id<MWPhoto>)photo {
+- (void)setPhoto:(MWPhoto *)photo {
     // Cancel any loading on old photo
-    if (_photo && photo == nil) {
-        if ([_photo respondsToSelector:@selector(cancelAnyLoading)]) {
-            [_photo cancelAnyLoading];
-        }
-    }
-    _photo = photo;
-    UIImage *img = [_photoBrowser imageForPhoto:_photo];
-    if (img) {
-        [self displayImage];
-    } else {
-        // Will be loading so show loading
-        [self showLoadingIndicator];
-    }
+    
+    [self displayImage]; 
+//    if (_photo && photo == nil) {
+//        if ([_photo respondsToSelector:@selector(cancelAnyLoading)]) {
+//            [_photo cancelAnyLoading];
+//        }
+//    }
+//    _photo = photo;
+//    UIImage *img = [_photoBrowser imageForPhoto:_photo];
+//    if (img) {
+//        [self displayImage];
+//    } else {
+//        // Will be loading so show loading
+//        [self showLoadingIndicator];
+//    }
 }
 
 // Get and display image
