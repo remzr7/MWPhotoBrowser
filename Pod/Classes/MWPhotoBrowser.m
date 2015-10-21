@@ -659,7 +659,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 
 - (id<MWPhoto>)photoAtIndex:(NSUInteger)index {
     id <MWPhoto> photo = nil;
-    if (index < _photos.count) {
+    if (index < [self numberOfPhotos]) {
         if ([_delegate respondsToSelector:@selector(photoBrowser:photoAtIndex:)]) {
             photo = [_delegate photoBrowser:self photoAtIndex:index];
         } else if ([_photos objectAtIndex:index] == [NSNull null]) {
