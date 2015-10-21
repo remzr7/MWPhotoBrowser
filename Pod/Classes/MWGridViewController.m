@@ -61,6 +61,7 @@
     [self.collectionView registerClass:[MWGridCell class] forCellWithReuseIdentifier:@"GridCell"];
     self.collectionView.alwaysBounceVertical = YES;
     self.collectionView.backgroundColor = [UIColor blackColor];
+    self.collectionView.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -162,12 +163,6 @@
     cell.selectionMode = _selectionMode;
     cell.isSelected = [_browser photoIsSelectedAtIndex:indexPath.row];
     cell.index = indexPath.row;
-//    UIImage *img = [_browser imageForPhoto:photo];
-//    if (img) {
-//        [cell displayImage];
-//    } else {
-//        [photo loadUnderlyingImageAndNotify];
-//    }
     return cell;
 }
 
@@ -177,7 +172,6 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-//    [((MWGridCell *)cell).photo cancelAnyLoading];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -199,6 +193,12 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     CGFloat margin = [self getMargin];
     return UIEdgeInsetsMake(margin, margin, margin, margin);
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.frame.size.height)) {
+        [_browser.delegate photoBrowserDidScrollToEnd:_browser];
+    }
 }
 
 @end

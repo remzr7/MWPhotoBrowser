@@ -717,6 +717,13 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         }
     }
 }
+- (void)photoBrowserDidScrollToEnd:(MWPhotoBrowser *)photoBrowser {
+    if (_displaySelectionButtons) {
+        if ([self.delegate respondsToSelector:@selector(photoBrowserDidScrollToEnd:)]) {
+            [self.delegate photoBrowserDidScrollToEnd:self];
+        }
+    }
+}
 
 - (UIImage *)imageForPhoto:(id<MWPhoto>)photo {
 	if (photo) {
