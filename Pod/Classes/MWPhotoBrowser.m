@@ -638,13 +638,18 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         for (int i = previousCount; i < photoArray.count + previousCount; i++) {
             [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i
                                                               inSection:0]];
-            [_photos addObject:[_delegate photoBrowser:self photoAtIndex:i]];
-            [_thumbPhotos addObject:[_delegate photoBrowser:self thumbPhotoAtIndex:i]];
+            [_photos addObject:[NSNull null]];
+            [_photos addObject:[NSNull null]];
         }
         [_gridController.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            _photoCount = photoArray.count + previousCount;
+        }
+    }];
 }
+
 
 - (NSUInteger)numberOfPhotos {
     if (_photoCount == NSNotFound) {
