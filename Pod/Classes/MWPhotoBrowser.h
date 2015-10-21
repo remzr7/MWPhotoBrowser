@@ -65,6 +65,10 @@
 // Reloads the photo browser and refetches data
 - (void)reloadData;
 
+// Performs batch collectionView updates for grid without reloading data
+-(void) addBatchPhotos:(int) photosCount withPreviousCount:(int)previousCount;
+
+
 // Set page that photo browser starts on
 - (void)setCurrentPhotoIndex:(NSUInteger)index;
 
