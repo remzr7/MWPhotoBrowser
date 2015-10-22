@@ -125,25 +125,6 @@
         }
         
     }];
-    
-//    [self showLoadingIndicator];
-
-//    
-//    _photo = photo;
-//    if ([photo respondsToSelector:@selector(isVideo)]) {
-//        _videoIndicator.hidden = !photo.isVideo;
-//    } else {
-//        _videoIndicator.hidden = YES;
-//    }
-//    if (_photo) {
-//        if (![_photo underlyingImage]) {
-//            [self showLoadingIndicator];
-//        } else {
-//            [self hideLoadingIndicator];
-//        }
-//    } else {
-//        [self showImageFailure];
-//    }
 }
 
 - (void)displayImage {

@@ -15,7 +15,6 @@
     
     // Store margins for current setup
     CGFloat _margin, _gutter, _marginL, _gutterL, _columns, _columnsL;
-    
 }
 
 @end

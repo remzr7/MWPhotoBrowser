@@ -638,7 +638,10 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         }
         [_gridController.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
         
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        [self updateNavigation]; 
+    }];
+
 }
 
 

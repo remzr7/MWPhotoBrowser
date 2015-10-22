@@ -85,12 +85,8 @@
 
 - (void)prepareForReuse {
     [self hideImageFailure];
-//    self.photo = nil;
-//    self.captionView = nil;
-//    self.selectedButton = nil;
-//    self.playButton = nil;
+
     _photoImageView.hidden = NO;
-//    _photoImageView.image = nil;
     _index = NSUIntegerMax;
 }
 
@@ -105,38 +101,20 @@
 #pragma mark - Image
 
 - (void)setPhoto:(MWPhoto *)photo {
-    // Cancel any loading on old photo
-    
-//    if (_photo && photo == nil) {
-//        if ([_photo respondsToSelector:@selector(cancelAnyLoading)]) {
-//            [_photo cancelAnyLoading];
-//        }
-//    }
+
     _photo = photo;
     
     [self displayImage];
-
-//    UIImage *img = [_photoBrowser imageForPhoto:_photo];
-//    if (img) {
-//        [self displayImage];
-//    } else {
-//        // Will be loading so show loading
-//        [self showLoadingIndicator];
-//    }
 }
 
 // Get and display image
 - (void)displayImage {
-//	if (_photo && _photoImageView.image == nil) {
     
         		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
 		self.zoomScale = 1;
 		self.contentSize = CGSizeMake(0, 0);
-//
-//		// Get image from browser as it handles ordering of fetching
-//		UIImage *img = [_photoBrowser imageForPhoto:_photo];
         
         [_photoImageView sd_setImageWithURL:_photo.photoURL placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             if (error) {
@@ -149,30 +127,6 @@
         }];
         [self setMaxMinZoomScalesForCurrentBounds];
         [self setNeedsLayout];
-        
-//			// Hide indicator
-//
-//			// Set image
-//			_photoImageView.image = img;
-//			_photoImageView.hidden = NO;
-//			
-//			// Setup photo frame
-//			CGRect photoImageViewFrame;
-//			photoImageViewFrame.origin = CGPointZero;
-//			photoImageViewFrame.size = img.size;
-//			_photoImageView.frame = photoImageViewFrame;
-//			self.contentSize = photoImageViewFrame.size;
-//
-//			// Set zoom to minimum zoom
-//
-//		} else  {
-//
-//            // Show image failure
-//
-//			
-//		}
-//
-//	}
 }
 
 // Image failed so just show black!
